@@ -1,0 +1,21 @@
+#!/bin/bash
+
+GPSDATE=`gpspipe -w | head -10 | grep TPV | sed -r 's/.*"time":"([^"]*)".*/\1/' | head -1`
+
+if [ -z "$GPSDATE" ]; then
+	exit 1
+fi
+
+CURRENTDATE=$(date -u +"%Y-%m-%dT%H:%M:%S")
+DIFF=$(($(date -d "$GPSDATE" +%s) - $(date -d "$CURRENTDATE"Z +%s)))
+
+if [ ${DIFF} -gt 3600 ]; then
+	logger "Time difference is greater than 1 hour. Updating system time."
+else
+	#logger "Time difference is within 1 hour. No update needed."
+	exit 0
+fi
+
+date -s "$GPSDATE" >/dev/null
+
+#/usr/sbin/ntpd

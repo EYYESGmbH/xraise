@@ -1,0 +1,8 @@
+<launch>
+  <!-- This launchfile should bring up a node that broadcasts the GPS coordinates -->
+  
+  <node name="gps" pkg="gpsd_client" exec="gpsd_client-launch">
+  </node>
+
+  <node name="gps_transform" pkg="tf2_ros" exec="static_transform_publisher" args="0 0 0 0 0 0 /world /gps"/>
+</launch>

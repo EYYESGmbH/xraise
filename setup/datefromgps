@@ -1,0 +1,4 @@
+COMMAND=/home/user/xraisxraise/scripts/datefromgps
+
+# Run the script every minute if it exists
+* * * * *	root	[ -x $COMMAND ] && $COMMAND 2> /dev/null
